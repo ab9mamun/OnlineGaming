@@ -42,7 +42,7 @@
 <br><br>
 
 <form method="post" id="postform" action="ForumPage.jsp" > <!--MAY NEED TO CHANGE HERE-->
-    <input type="submit">
+    <input type="submit" value="Create Post">
 </form><br><br>
 
 <%

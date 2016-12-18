@@ -59,7 +59,7 @@
     <form method="post" id="replyform" action="ForumReplyPage.jsp" > <!--MAY NEED TO CHANGE HERE-->
         <input type="hidden" name="post_id" value="<%=post_id%>">
         
-        <input type="submit">
+        <input type="submit" value="Create Reply">
     </form><br><br>
     <%
         String replybody = request.getParameter("replybody");
