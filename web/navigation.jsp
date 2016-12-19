@@ -8,6 +8,7 @@
    out.print(Webpage.make(Webpage.home, "Home")+" "); 
    out.print(Webpage.make(Webpage.profile, "Profile")+" "); 
    out.print(Webpage.make(Webpage.playerinfo, "PlayerInfo")+" "); 
+   out.print(Webpage.make(Webpage.informationpage, "InformationPage")+" "); 
    
     out.print(Webpage.make(Webpage.forum, "Forum")+" "); 
     out.print(Webpage.make(Webpage.logout, "Logout")+" "); 
@@ -15,10 +16,10 @@
     <br>
     <%
     if((new DataAccess()).isAdmin(username)){
-    out.print(Webpage.make(Webpage.admin_home, "Admin Home")+" "); 
-    out.print(Webpage.make(Webpage.manage_moderators, "Manage Moderators")+" "); 
+    out.print(Webpage.make(Webpage.admin_home, "AdminHome")+" "); 
+    out.print(Webpage.make(Webpage.manage_moderators, "Moderators")+" "); 
    
-    out.print(Webpage.make(Webpage.manage_sections, "Manage Sections")+" "); 
+    out.print(Webpage.make(Webpage.manage_sections, "Sections")+" "); 
     }
 
 %>

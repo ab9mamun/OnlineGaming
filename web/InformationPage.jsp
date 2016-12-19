@@ -1,3 +1,4 @@
+<%@page import="muman.db.DataAccess"%>
 <%@page import="muman.etc.Webpage"%>
 <%@ page import="muman.models.Player" %>
 <%@ page import="muman.models.MatchDetails" %>
@@ -25,21 +26,45 @@
 
     String type=request.getParameter("type");// caution!! it'll be used in if else
     //if bpimr, I expect a Player object
+    Player player =null;
+    int highestVal=0;
+    MatchDetails match = null;
+    if(type!=null && type.equals("bpimr")) {
+        player = (new DataAccess()).getBestPlayerInMyRegion(username);
+        if(player==null) player = new Player("No player", -1, -1, -1, -1, -1);
+    }
+    
     //if bpiar, I expect a Player object
+    else if(type!=null && type.equals("bpiar")) {
+        player = (new DataAccess()).getBestPlayerInAllRegions();
+        if(player==null) player = new Player("No player", -1, -1, -1, -1, -1);
+    }
     //if nomt, I expect an integer
+    else if(type!=null && type.equals("nomt")){
+        highestVal = (new DataAccess()).getNumberOfMatchesToday();
+    }
+    
+    
     //if mwhts, I expect a matchdetails object
+     else if(type!=null && type.equals("mwhts")) {
+        match= (new DataAccess()).getMatchWithHighestTotalScore();
+        if(match ==null) match = new MatchDetails(-1, -1, "No player", "No player", new Date(new java.util.Date().getTime()));
+    }
     //if mwhsd, I expect a matchdetails object
-
+    else if(type!=null && type.equals("mwhsd")) {
+        match= (new DataAccess()).getMatchWithHighestScoreDifference();
+         if(match ==null) match = new MatchDetails(-1, -1, "No player", "No player", new Date(new java.util.Date().getTime()));
+    }
     //if(type==) check here and do the rest
 
     //DUMMY STARTS HERE
 
     //case 4
-    MatchDetails match=new MatchDetails(10,12,"MAMUN","NUMAN",new Date(new java.util.Date().getTime()));
+  
     //case 3
-    int highestVal=1000;
+  //  int highestVal=1000;
     //case 2 & 1
-    Player player=new Player("NUMAN",1,2,3,4,5);
+  //  Player player=new Player("NUMAN",1,2,3,4,5);
 
 %>
 
@@ -48,7 +73,7 @@
 
     <select name="type">
         <option value="bpimr">Best player in my region</option>
-        <option value="bpiar">Best player of all region</option>
+        <option value="bpiar">Best player of all regions</option>
         <option value="nomt">Number of matches today</option>
         <option value="mwhts">Match with highest total score</option>
         <option value="mwhsd">Match with highest score difference</option>
@@ -64,8 +89,9 @@
 if(type!=null){
 if(type.equals("bpimr"))out.print("<h2>BEST PLAYER IN MY REGION</h2><br>");
 else if(type.equals("bpiar"))out.print("<h2>BEST PLAYER IN ALL REGION</h2><br>");
-else if(type.equals("nomt"))out.print("<h2>NUMBER OF TODAY'S MATCH</h2><br>");
-else if (type.equals("mwhts"))out.print("<h2>MATCH WITH HIGHEST SCORE</h2><br>");
+else if(type.equals("nomt"))out.print("<h2>NUMBER OF MATCHES TODAY</h2><br>");
+else if (type.equals("mwhts"))out.print("<h2>MATCH WITH HIGHEST TOTAL SCORE</h2><br>");
+else if (type.equals("mwhsd"))out.print("<h2>MATCH WITH HIGHEST SCORE DIFFERENCE</h2><br>");
 
 if((type.equals("bpimr")||type.equals("bpiar"))){%>
 USERNAME:&nbsp <h3><%=player.getUsername()%></h3><br>

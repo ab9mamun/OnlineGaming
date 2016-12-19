@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import muman.models.Match;
+import muman.models.MatchDetails;
 import muman.models.Player;
 import muman.models.UserInfo;
 import muman.models.forum.ForumPost;
@@ -808,4 +809,108 @@ public class DataAccess
         catch(Exception e){
                 return null;                }
          }
+    
+    
+    
+    
+    public Player getBestPlayerInMyRegion(String username){
+        
+        String sql = "SELECT USERNAME, RATING, MATCH_COUNT, WIN_COUNT, BEST_SCORE, TOTAL_XP \n" +
+                        "FROM USER_TABLE JOIN PLAYER_TABLE ON (PLAYER_ID = USER_ID)\n" +
+                        "WHERE RATING = (SELECT NVL(MAX(RATING),0)\n" +
+                        "                FROM PLAYER_TABLE )\n" +
+                        " AND REGION = (SELECT REGION FROM USER_TABLE WHERE USERNAME = ?)\n" +
+                        "ORDER BY WIN_COUNT DESC";
+        try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                return new Player(rs.getString("username"), rs.getInt("RATING"),rs.getInt("MATCH_COUNT"),rs.getInt("WIN_COUNT"),
+                    rs.getInt("BEST_SCORE"),rs.getInt("TOTAL_XP"));
+            }
+        
+            return null;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+                }
+    }
+    public Player getBestPlayerInAllRegions(){
+        String sql = "SELECT USERNAME, RATING, MATCH_COUNT, WIN_COUNT, BEST_SCORE, TOTAL_XP \n" +
+                        "FROM USER_TABLE JOIN PLAYER_TABLE ON (PLAYER_ID = USER_ID)\n" +
+                        "WHERE RATING = (SELECT NVL(MAX(RATING),0)\n" +
+                        "                FROM PLAYER_TABLE )\n" +
+                        "ORDER BY WIN_COUNT DESC";
+        try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                return new Player(rs.getString("username"), rs.getInt("RATING"),rs.getInt("MATCH_COUNT"),rs.getInt("WIN_COUNT"),
+                    rs.getInt("BEST_SCORE"),rs.getInt("TOTAL_XP"));
+            }
+        
+            return null;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+                }
+           
+    }
+    public int getNumberOfMatchesToday(){
+         String sql = "SELECT COUNT(MATCH_ID) TOTAL \n" +
+                        "FROM MATCH_TABLE\n" +
+                        "WHERE TO_CHAR(MATCH_DATE,'DD/MON/YYYY') = TO_CHAR(SYSDATE, 'DD/MON/YYYY')";
+        try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            if(rs.next()){
+                return rs.getInt("total");
+            }
+        
+            return 0;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return 0;
+            }
+           
+         }  
+    
+         public MatchDetails getMatchWithHighestTotalScore(){
+             
+             try{
+                 
+                 return null;
+             }
+             catch(Exception e){
+                 e.printStackTrace();
+                return null;
+             }
+             
+         }
+         public MatchDetails getMatchWithHighestScoreDifference(){
+            
+             
+             try{
+                 
+                 
+                 
+                 
+                 return null;
+             }
+             catch(Exception e){
+                 e.printStackTrace();
+                return null;
+             }
+             
+         }
+        
+        
+
 }
