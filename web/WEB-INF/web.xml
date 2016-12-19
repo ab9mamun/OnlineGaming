@@ -48,6 +48,16 @@
         <servlet-name>PlayerInfo</servlet-name>
         <jsp-file>/PlayerInfo.jsp</jsp-file>
     </servlet>
+    
+    <servlet>
+        <servlet-name>PlayMatch</servlet-name>
+        <jsp-file>/playMatch.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PlayMatch</servlet-name>
+        <url-pattern>/PlayMatch</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>MANAGE_SECTIONS</servlet-name>
         <jsp-file>/Manage_Sections.jsp</jsp-file>

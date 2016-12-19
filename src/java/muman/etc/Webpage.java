@@ -16,7 +16,7 @@ public class Webpage {
     public final static String profile = "profile.jsp";
     public final static String playerinfo = "PlayerInfo.jsp";
     public final static String informationpage = "InformationPage.jsp";
-    public final static String playrandom = "playRandom.jsp";
+    public final static String playmatch = "playMatch.jsp";
     public final static String forum = "ForumPage.jsp";
     public final static String forumreply = "ForumReplyPage.jsp";
     public final static String matchhistory = "MatchHistory.jsp";

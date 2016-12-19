@@ -9,15 +9,32 @@ package muman.models;
  *
  * @author ab9ma
  */
-public class Match {
+public class PendingMatch {
     private int id;
     private String player1;
     private String player2;
+    private String date;
 
-    public Match(int id, String player1, String player2) {
+    public PendingMatch(int id, String player1, String player2) {
         this.id = id;
         this.player1 = player1;
         this.player2 = player2;
+        date = null;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public PendingMatch(int id, String player1, String player2, String date) {
+        this.id = id;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.date = date;
     }
 
     public int getId() {

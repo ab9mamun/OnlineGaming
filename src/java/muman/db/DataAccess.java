@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import muman.models.Match;
+import muman.models.PendingMatch;
 import muman.models.MatchDetails;
 import muman.models.Player;
 import muman.models.Tournament;
@@ -164,7 +164,7 @@ public class DataAccess
         }
     }
 
-    public Match addMatch(String player1, String player2) {
+    public int addMatch(String player1, String player2) {
        
     try{
         String sql = "{ ? = call INSERT_MATCH(?,?) }";
@@ -177,26 +177,22 @@ public class DataAccess
     //this is the main line
     int id =(int) statement.getLong(1);
     
-    if (id > 0) {
-        return new Match(id, player1, player2);
-    } else {
-        return null;
-    }
+    return id;
     }
         catch(SQLException e){
-               return null;
+               return -1;
         }
       
     }
 
-    public void updateMatch(Match match, int score1, int score2) {
+    public void updateMatch(int match_id, String player1,int score1, String player2,  int score2) {
         String sql = "{ call UPDATE_MATCH(?,?,?,?,?) }";
         try{
         CallableStatement statement = conn.prepareCall(sql);
-        statement.setInt(1,match.getId());
-        statement.setString(2,match.getPlayer1());
+        statement.setInt(1,match_id);
+        statement.setString(2,player1);
         statement.setInt(3,score1);
-        statement.setString(4,match.getPlayer2());
+        statement.setString(4,player2);
         statement.setInt(5,score2);
 
 
@@ -1071,6 +1067,43 @@ public class DataAccess
             }
         
             return tournaments;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }  
+             
+             
+         }
+        public ArrayList<PendingMatch> getPendingMatches(){
+           String sql = "SELECT T1.MATCH_ID M_ID,\n" +
+                        "(SELECT USERNAME\n" +
+                        "FROM USER_TABLE\n" +
+                        "WHERE USER_ID = T1.PLAYER_ID) PLAYER1,\n" +
+                        "\n" +
+                        "(SELECT USERNAME\n" +
+                        "FROM USER_TABLE\n" +
+                        "WHERE USER_ID = T2.PLAYER_ID) PLAYER2\n" +
+                        "\n" +
+                        "FROM MATCH_PARTICIPANTS_TABLE T1\n" +
+                        "JOIN\n" +
+                        "MATCH_PARTICIPANTS_TABLE T2\n" +
+                        "ON (T1.MATCH_ID = T2.MATCH_ID "
+                        + "AND T1.PLAYER_ID <T2.PLAYER_ID "
+                         + "AND (T1.SCORE IS NULL OR T2.SCORE IS NULL))";
+           
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<PendingMatch> matches = new ArrayList<>();
+            
+            while(rs.next()){
+                matches.add(new PendingMatch(rs.getInt("M_ID"), rs.getString("PLAYER1"),
+                        rs.getString("PLAYER2")));
+            }
+        
+            return matches;
         }
         catch(Exception e){
                 e.printStackTrace();

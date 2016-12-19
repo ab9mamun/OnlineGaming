@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import javax.xml.ws.spi.http.HttpContext;
 import muman.db.DataAccess;
 import muman.etc.Webpage;
-import muman.models.Match;
+import muman.models.PendingMatch;
 
 /**
  *
@@ -53,9 +53,11 @@ public class PlayRandom extends HttpServlet {
                player2 = db.getRandomPlayer(username);
                if(player2==null) out.print("No player available");
                else {
-                   session.setAttribute("match",db.addMatch(username, player2));
+                 int id = db.addMatch(username, player2);
                    
-                 RequestDispatcher rd = request.getRequestDispatcher(Webpage.playrandom);
+                if(id>0) request.setAttribute("message", "Match has been played, Admin will announce the result.");
+                else request.setAttribute("message", "Match was not played.");
+                 RequestDispatcher rd = request.getRequestDispatcher(Webpage.home);
                 rd.forward(request, response);
                }
            }

@@ -27,6 +27,15 @@
                 rd.forward(request, response);
             }
          %>
+         <!--checking message-->
+         <%
+             String message = (String) request.getAttribute("message");
+             if(message!=null && !message.equals("")){
+                 out.println("Message: "+message+"<br>");
+             }
+             %>
+         
+         
          <form action="PlayRandom.do">
              <input type="submit" value="Play Random"></input>
          </form>

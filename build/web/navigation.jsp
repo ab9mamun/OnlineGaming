@@ -26,7 +26,7 @@
     out.print(Webpage.make(Webpage.manage_moderators, "Moderators")+" "); 
    
     out.print(Webpage.make(Webpage.manage_sections, "Sections")+" "); 
-    out.print(Webpage.make(Webpage.pendingmatches, "PendingMatches"+ " "));
+    out.print(Webpage.make(Webpage.pendingmatches, "PendingMatches")+ " ");
     }
 
 %>

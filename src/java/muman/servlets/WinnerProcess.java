@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import muman.db.DataAccess;
 import muman.etc.Webpage;
-import muman.models.Match;
+import muman.models.PendingMatch;
 
 /**
  *
@@ -39,12 +39,16 @@ public class WinnerProcess extends HttpServlet {
     PrintWriter out = response.getWriter();
       try{
            HttpSession session = request.getSession();
-             Match match = (Match) session.getAttribute("match");
+           
+             int match_id = Integer.parseInt(request.getParameter("match_id"));
+             String player1 = request.getParameter("player1");
+             String player2 = request.getParameter("player2");
+             
              int score1 = Integer.parseInt(request.getParameter("score1"));
              int score2 = Integer.parseInt(request.getParameter("score2"));
              
              DataAccess db = new DataAccess();
-             db.updateMatch(match, score1, score2);
+             db.updateMatch(match_id, player1,score1, player2,  score2);
              
              request.getRequestDispatcher(Webpage.home).forward(request, response);
           }
