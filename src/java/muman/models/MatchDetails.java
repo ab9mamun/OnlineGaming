@@ -10,10 +10,10 @@ public class MatchDetails {
     private int score2;
     private String player1;
     private String player2;
-    private Date date;
+    private String date;
 
 
-    public MatchDetails(int score1, int score2, String player1, String player2, Date date) {
+    public MatchDetails(int score1, int score2, String player1, String player2, String date) {
         this.score1 = score1;
         this.score2 = score2;
         this.player1 = player1;
@@ -37,7 +37,12 @@ public class MatchDetails {
         return player2;
     }
 
-    public Date getDate() {
+    public  String getDate() {
         return date;
+    }
+    
+    
+    public static void main(String[] args) {
+        System.out.println(new java.util.Date(new Date(new java.util.Date().getTime()).getTime()));
     }
 }

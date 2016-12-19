@@ -9,7 +9,7 @@ public class ForumPost {
     private String title;
     private String id;
     private String content;
-    private Date date;
+    private String date;
     private String posted_by;
     private String section;
     private int pflag;
@@ -22,7 +22,7 @@ public class ForumPost {
         this.pflag = pflag;
     }
     
-    public ForumPost(String title, String id, String content, Date date, String posted_by, String section) {
+    public ForumPost(String title, String id, String content, String date, String posted_by, String section) {
         this.title = title;
         this.id = id;
         this.content = content;
@@ -43,7 +43,7 @@ public class ForumPost {
         return content;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

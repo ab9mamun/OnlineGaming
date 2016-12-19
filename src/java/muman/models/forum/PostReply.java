@@ -9,7 +9,7 @@ public class PostReply {
     private String post_id;
     private String reply_id;
     private String replied_by;
-    private Date date;
+    private String date;
     private String content;
     private int rflag;
 
@@ -21,7 +21,7 @@ public class PostReply {
         this.rflag = rflag;
     }
 
-    public PostReply(String post_id, String reply_id, String replied_by, Date date, String content) {
+    public PostReply(String post_id, String reply_id, String replied_by, String date, String content) {
         this.post_id = post_id;
         this.reply_id = reply_id;
         this.replied_by = replied_by;
@@ -53,11 +53,11 @@ public class PostReply {
         this.replied_by = replied_by;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

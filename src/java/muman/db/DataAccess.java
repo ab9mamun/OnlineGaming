@@ -7,7 +7,6 @@ package muman.db;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -229,7 +228,7 @@ public class DataAccess
                 String title = rs.getString("post_title");
                 String id = rs.getString("post_id");
                 String content = rs.getString("post_content");
-                Date date = rs.getDate("post_date");
+                String date = rs.getString("post_date");
                 String postedby = rs.getString("username");
                 String section = rs.getString("section_name");
                 ForumPost post =  new ForumPost(title, id, content, date, postedby, section);
@@ -258,7 +257,8 @@ public class DataAccess
                 "JOIN FORUM_POST_TABLE\n" +
                 "ON(USER_TABLE.USER_ID=FORUM_POST_TABLE.POSTED_BY_ID)\n" +
                 "JOIN SECTION_TABLE\n" +
-                "ON(SECTION_TABLE.SECTION_ID=FORUM_POST_TABLE.SECTION_ID)";
+                "ON(SECTION_TABLE.SECTION_ID=FORUM_POST_TABLE.SECTION_ID) "
+                    + "ORDER BY POST_DATE DESC ";
             
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1,"(deleted user)");
@@ -273,7 +273,7 @@ public class DataAccess
                 String title = rs.getString("post_title");
                 String id = rs.getString("post_id");
                 String content = rs.getString("post_content");
-                Date date = rs.getDate("post_date");
+                String date = rs.getString("post_date");
                 String postedby = rs.getString("poster");
                 String section = rs.getString("section");
                 posts.add(new ForumPost(title, id, content, date, postedby, section));
@@ -380,7 +380,8 @@ public class DataAccess
                 "USER_TABLE\n" +
                 "JOIN FORUM_REPLY_TABLE\n" +
                 "ON(USER_TABLE.USER_ID=FORUM_REPLY_TABLE.REPLIED_BY)"
-                    + "WHERE POST_ID = ?";
+                    + "WHERE POST_ID = ? "
+                    + "ORDER BY REPLY_DATE DESC ";
             
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, post_id);
@@ -392,7 +393,7 @@ public class DataAccess
             {
                 String reply_id = rs.getString("reply_id");
                 String replied_by = rs.getString("username");
-                Date date = rs.getDate("reply_date");
+                String date = rs.getString("reply_date");
                 String content = rs.getString("reply_content");
                 
                 PostReply reply = new PostReply(post_id, reply_id, replied_by, date, content);
@@ -958,7 +959,7 @@ public class DataAccess
                 
                 
                 matches.add(new MatchDetails(rs.getInt("score1"), rs.getInt("score2"),
-                        rs.getString("player1"), rs.getString("player2"), rs.getDate("M_DATE")));
+                        rs.getString("player1"), rs.getString("player2"), rs.getString("M_DATE")));
             }
         
             return matches;

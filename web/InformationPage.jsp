@@ -48,12 +48,12 @@
     //if mwhts, I expect a matchdetails object
      else if(type!=null && type.equals("mwhts")) {
         match= (new DataAccess()).getMatchWithHighestTotalScore();
-        if(match ==null) match = new MatchDetails(-1, -1, "No player", "No player", new Date(new java.util.Date().getTime()));
+        if(match ==null) match = new MatchDetails(-1, -1, "No player", "No player", "No record");
     }
     //if mwhsd, I expect a matchdetails object
     else if(type!=null && type.equals("mwhsd")) {
         match= (new DataAccess()).getMatchWithHighestScoreDifference();
-         if(match ==null) match = new MatchDetails(-1, -1, "No player", "No player", new Date(new java.util.Date().getTime()));
+         if(match ==null) match = new MatchDetails(-1, -1, "No player", "No player", "No record");
     }
     //if(type==) check here and do the rest
 
