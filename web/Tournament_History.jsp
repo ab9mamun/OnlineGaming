@@ -1,3 +1,4 @@
+<%@page import="muman.db.DataAccess"%>
 <%@page import="muman.etc.Webpage"%>
 <%@ page import="muman.models.Tournament" %>
 <%@ page import="java.util.ArrayList" %><%--
@@ -22,15 +23,15 @@
 
 <%
     //get the tournaments from DB
-    ArrayList<Tournament> tournaments=new ArrayList<>();
+    ArrayList<Tournament> tournaments=(new DataAccess().getAllFinishedTournaments());
 
     //dummy
-    tournaments.add(new Tournament(12,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
-    tournaments.add(new Tournament(12,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
-    tournaments.add(new Tournament(13,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
-    tournaments.add(new Tournament(14,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
-    tournaments.add(new Tournament(15,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
-
+//    tournaments.add(new Tournament(12,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
+//    tournaments.add(new Tournament(12,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
+//    tournaments.add(new Tournament(13,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
+//    tournaments.add(new Tournament(14,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
+//    tournaments.add(new Tournament(15,"ABCD","NOT TODAY","NOT TOMORROW","NOT YOU"));
+    if(tournaments!=null)
     for(int i=0;i<tournaments.size();i++){
         Tournament cur=tournaments.get(i);
 %>

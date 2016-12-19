@@ -1046,4 +1046,37 @@ public class DataAccess
             return 0;
         }
        }
+        
+        public ArrayList<Tournament> getAllFinishedTournaments(){
+           String sql = "SELECT TOURNAMENT_ID, TOURNAMENT_NAME, START_DATE, END_DATE,\n" +
+                        "(SELECT USERNAME\n" +
+                        "FROM USER_TABLE\n" +
+                        "WHERE USER_ID = (SELECT PLAYER_ID \n" +
+                                            "FROM TOURNAMENT_PARTICIPANTS_TABLE T2 \n" +
+                                            "WHERE T2.TOURNAMENT_ID = T.TOURNAMENT_ID\n" +
+                                            "AND POSITION = 1)) WINNER\n" +
+                        "\n" +
+                        "FROM TOURNAMENT_TABLE T\n" +
+                        "WHERE END_DATE IS NOT NULL";
+           
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<Tournament> tournaments = new ArrayList<>();
+            
+            while(rs.next()){
+                tournaments.add(new Tournament(rs.getInt("TOURNAMENT_ID"), rs.getString("TOURNAMENT_NAME"),
+                        rs.getString("START_DATE"), rs.getString("END_DATE"), rs.getString("WINNER")));
+            }
+        
+            return tournaments;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }  
+             
+             
+         }
 }
