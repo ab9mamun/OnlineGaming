@@ -886,7 +886,18 @@ public class DataAccess
              
              try{
                  
-                 return null;
+                 ArrayList<MatchDetails> matches = getAllMatches();
+                 MatchDetails required = matches.get(0);
+                 MatchDetails cur;
+                 for(int i=1; i<matches.size(); i++){
+                    cur = matches.get(i);
+                    if(required.getScore1()+required.getScore2() < cur.getScore1()+cur.getScore2()){
+                        required = cur;
+                    }
+                     
+                 }
+                 return required;
+                 
              }
              catch(Exception e){
                  e.printStackTrace();
@@ -899,10 +910,20 @@ public class DataAccess
              
              try{
                  
+                 ArrayList<MatchDetails> matches = getAllMatches();
+                 MatchDetails required = matches.get(0);
+                 MatchDetails cur;
+                 for(int i=1; i<matches.size(); i++){
+                    cur = matches.get(i);
+                    if(Math.abs(required.getScore1()-required.getScore2()) <
+                            Math.abs(cur.getScore1()-cur.getScore2())){
+                        
+                        required = cur;
+                    }
+                     
+                 }
+                 return required;
                  
-                 
-                 
-                 return null;
              }
              catch(Exception e){
                  e.printStackTrace();
@@ -911,6 +932,44 @@ public class DataAccess
              
          }
         
+         
+         
+         
+         public ArrayList<MatchDetails> getAllMatches(){
+             
+             String sql = "SELECT MT.MATCH_ID, MT.SCORE SCORE1, MT2.SCORE SCORE2, \n" +
+                            "(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT.PLAYER_ID) PLAYER1,\n" +
+                            "(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT2.PLAYER_ID) PLAYER2,\n" +
+                            "\n" +
+                            "M_T.MATCH_DATE M_DATE\n" +
+                            "\n" +
+                            "FROM MATCH_PARTICIPANTS_TABLE MT JOIN MATCH_PARTICIPANTS_TABLE MT2\n" +
+                            "ON(MT.MATCH_ID = MT2.MATCH_ID AND MT.PLAYER_ID < MT2.PLAYER_ID)\n" +
+                            "\n" +
+                            "JOIN MATCH_TABLE M_T\n" +
+                            "ON (MT.MATCH_ID = M_T.MATCH_ID)";
+        try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<MatchDetails> matches = new ArrayList<>();
+            
+            while(rs.next()){
+                
+                
+                matches.add(new MatchDetails(rs.getInt("score1"), rs.getInt("score2"),
+                        rs.getString("player1"), rs.getString("player2"), rs.getDate("M_DATE")));
+            }
+        
+            return matches;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }
+             
+             
+         }
         
 
 }
