@@ -9,6 +9,7 @@
    out.print(Webpage.make(Webpage.profile, "Profile")+" "); 
    out.print(Webpage.make(Webpage.playerinfo, "PlayerInfo")+" "); 
    out.print(Webpage.make(Webpage.informationpage, "InformationPage")+" "); 
+   out.print(Webpage.make(Webpage.matchhistory, "MatchHistory")+" "); 
    
     out.print(Webpage.make(Webpage.forum, "Forum")+" "); 
     out.print(Webpage.make(Webpage.logout, "Logout")+" "); 

@@ -948,7 +948,8 @@ public class DataAccess
                             "ON(MT.MATCH_ID = MT2.MATCH_ID AND MT.PLAYER_ID < MT2.PLAYER_ID)\n" +
                             "\n" +
                             "JOIN MATCH_TABLE M_T\n" +
-                            "ON (MT.MATCH_ID = M_T.MATCH_ID)";
+                            "ON (MT.MATCH_ID = M_T.MATCH_ID) "
+                           + "ORDER BY M_DATE DESC";
         try{
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();

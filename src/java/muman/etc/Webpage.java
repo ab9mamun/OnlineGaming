@@ -19,6 +19,7 @@ public class Webpage {
     public final static String playrandom = "playRandom.jsp";
     public final static String forum = "ForumPage.jsp";
     public final static String forumreply = "ForumReplyPage.jsp";
+    public final static String matchhistory = "MatchHistory.jsp";
     
     public final static String admin_home = "AdminPage.jsp";
     public final static String manage_moderators = "Manage_Moderators.jsp";
