@@ -25,6 +25,7 @@ public class Webpage {
     public final static String pendingmatches = "PendingMatches.jsp";
     public final static String pendingtournamentmatches = "PendingTournamentMatches.jsp";
     public final static String pendingtournaments = "PendingTournaments.jsp";
+    public final static String playtournamentmatch = "PlayTournamentMatch.jsp";
     
     public final static String admin_home = "AdminPage.jsp";
     public final static String manage_moderators = "Manage_Moderators.jsp";

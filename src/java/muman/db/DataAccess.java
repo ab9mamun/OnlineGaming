@@ -16,6 +16,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import muman.models.PendingMatch;
 import muman.models.MatchDetails;
+import muman.models.PendingTournamentMatch;
 import muman.models.Player;
 import muman.models.Tournament;
 import muman.models.UserInfo;
@@ -1055,7 +1056,8 @@ public class DataAccess
                                             "AND POSITION = 1)) WINNER\n" +
                         "\n" +
                         "FROM TOURNAMENT_TABLE T\n" +
-                        "WHERE END_DATE IS NOT NULL";
+                        "WHERE END_DATE IS NOT NULL "
+                   + "ORDER BY END_DATE DESC";
            
             try{
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -1237,7 +1239,14 @@ public class DataAccess
         
         public ArrayList<Tournament> getAllUnfinishedTournaments(){
             
-            String sql = "";
+            String sql = "SELECT TOURNAMENT_ID, TOURNAMENT_NAME, START_DATE\n" +
+                        "FROM TOURNAMENT_TABLE\n" +
+                        "WHERE TOURNAMENT_ID IN (SELECT TOURNAMENT_ID\n" +
+                                               "FROM TOURNAMENT_MATCH_TABLE\n" +
+                                              "WHERE MATCH_ID IN (SELECT MATCH_ID\n" +
+                                                                "FROM MATCH_PARTICIPANTS_TABLE\n" +
+                                                                   "WHERE SCORE IS NULL)) "
+                         + "ORDER BY START_DATE ASC";
                     
            try{
                
@@ -1258,5 +1267,58 @@ public class DataAccess
            }
             
         }
+        
+        public ArrayList<PendingTournamentMatch> getPendingTournamentMatches(int tournament_id){
+           String sql = "SELECT T1.MATCH_ID M_ID,\n" +
+                        "(SELECT USERNAME\n" +
+                        "FROM USER_TABLE\n" +
+                        "WHERE USER_ID = T1.PLAYER_ID) PLAYER1,\n" +
+                        "\n" +
+                        "(SELECT USERNAME\n" +
+                        "FROM USER_TABLE\n" +
+                        "WHERE USER_ID = T2.PLAYER_ID) PLAYER2,\n" +
+                        "(SELECT MATCH_DATE\n" +
+                        "FROM MATCH_TABLE T3\n" +
+                        "WHERE T1.MATCH_ID = T3.MATCH_ID) M_DATE,\n" +
+                        "\n" +
+                        "(SELECT MATCH_LEVEL\n" +
+                        "FROM TOURNAMENT_MATCH_TABLE T4\n" +
+                        "WHERE T1.MATCH_ID = T4.MATCH_ID) M_LEVEL\n" +
+                        "\n" +
+                        "FROM MATCH_PARTICIPANTS_TABLE T1\n" +
+                        "JOIN\n" +
+                        "MATCH_PARTICIPANTS_TABLE T2\n" +
+                        "\n" +
+                        "ON (T1.MATCH_ID = T2.MATCH_ID AND T1.PLAYER_ID <T2.PLAYER_ID \n" +
+                        "AND (T1.SCORE IS NULL OR T2.SCORE IS NULL))\n" +
+                        "\n" +
+                        "WHERE T1.MATCH_ID IN (SELECT MATCH_ID\n" +
+                                              "FROM TOURNAMENT_MATCH_TABLE\n" +
+                                              "WHERE MATCH_ID = T1.MATCH_ID \n" +
+                                              "AND TOURNAMENT_ID = ?) \n" +
+                        "ORDER BY M_DATE ASC ";
+           
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, tournament_id);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<PendingTournamentMatch> matches = new ArrayList<>();
+            
+            while(rs.next()){
+                matches.add(new PendingTournamentMatch(tournament_id, rs.getInt("M_LEVEL"),
+                        rs.getInt("M_ID"), rs.getString("PLAYER1"),
+                        rs.getString("PLAYER2"), rs.getString("M_DATE")));
+            }
+        
+            return matches;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }  
+             
+             
+         }
         
 }

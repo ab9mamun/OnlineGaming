@@ -22,27 +22,20 @@
         if(username==null) request.getRequestDispatcher(Webpage.login).forward(request, response);
         if((new DataAccess()).isAdmin(username) == false) request.getRequestDispatcher(Webpage.home).forward(request, response);
        %>
-<h1>PENDING MATCHES</h1>
         <h1>PENDING TOURNAMENTS</h1>
         <%
-            ArrayList<Tournament> tournaments = (new DataAccess()).getALlUnfinishedTournaments();
+            ArrayList<Tournament> tournaments = (new DataAccess()).getAllUnfinishedTournaments();
             
             if(tournaments!=null){
         %>
-        <h5>Total <%=tournaments.size()%> Matches Pending</h5>
-        <form action="<%=Webpage.playmatch%>" method="post">
-            <button type="submit" name="button" value="discardall">Discard All</button>
-      
-        </form>
-                
-        
+        <h5>Total <%=tournaments.size()%> Tournaments Pending</h5>
         <%
     for(int i=0;i<tournaments.size();i++){
         Tournament cur=tournaments.get(i);
 %>
 <form action="<%=Webpage.pendingtournamentmatches%>" method="post">
-
-    <input type="hidden" name="match_id" value="<%=cur.getId()%>"><!--may need to change here :)-->
+    <input type="hidden" name="tournament_name" value="<%=cur.getName()%>">
+    <input type="hidden" name="tournament_id" value="<%=cur.getId()%>"><!--may need to change here :)-->
 <%=cur.getStartDate()%>&nbsp->&nbsp<%=cur.getName()%>&nbsp
 <button type="submit" name="button" value="play">View Pending Matches</button>&nbsp
 </form>

@@ -24,6 +24,10 @@
         <servlet-name>MakeAvailable</servlet-name>
         <servlet-class>muman.servlets.MakeAvailable</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TournamentMatchWinnerProcess</servlet-name>
+        <servlet-class>muman.servlets.tournament.TournamentMatchWinnerProcess</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ForumPage</servlet-name>
         <url-pattern>/ForumPage</url-pattern>
@@ -59,6 +63,22 @@
     <servlet-mapping>
         <servlet-name>PlayMatch</servlet-name>
         <url-pattern>/PlayMatch</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PendingTournamentMatches</servlet-name>
+        <jsp-file>/PendingTournamentMatches.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PendingTournamentMatches</servlet-name>
+        <url-pattern>/PendingTournamentMatches</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>PlayTournamentMatch</servlet-name>
+        <jsp-file>/PlayTournamentMatch.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PlayTournamentMatch</servlet-name>
+        <url-pattern>/PlayTournamentMatch</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>MANAGE_SECTIONS</servlet-name>
@@ -123,6 +143,10 @@
     <servlet-mapping>
         <servlet-name>MakeAvailable</servlet-name>
         <url-pattern>/MakeAvailable.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TournamentMatchWinnerProcess</servlet-name>
+        <url-pattern>/TournamentMatchWinnerProcess.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
