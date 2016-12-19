@@ -20,6 +20,9 @@ public class Webpage {
     public final static String forum = "ForumPage.jsp";
     public final static String forumreply = "ForumReplyPage.jsp";
     public final static String matchhistory = "MatchHistory.jsp";
+    public final static String availabletournaments = "Available_Tournaments.jsp";
+    public final static String tournamenthistory = "Tournament_History.jsp";
+    public final static String pendingmatches = "PendingMatches.jsp";
     
     public final static String admin_home = "AdminPage.jsp";
     public final static String manage_moderators = "Manage_Moderators.jsp";

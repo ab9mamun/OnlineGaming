@@ -20,7 +20,7 @@
 <input required form="postform" type="text" name="posttitle" placeholder="Title of the post" size="81"><br>
 <textarea required name="postbody" form="postform" rows="4" cols="50" style="resize:none" placeholder="Enter your post....."></textarea>
 <br>
-<select required form="postform" name="postsection">
+Section <select required form="postform" name="postsection">
 
     <%
      

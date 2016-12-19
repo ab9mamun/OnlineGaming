@@ -12,6 +12,14 @@
         <servlet-name>ForumReplyPage</servlet-name>
         <jsp-file>&gt;/ForumReplyPage.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>JoinTournament</servlet-name>
+        <servlet-class>muman.servlets.tournament.JoinTournament</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateTournament</servlet-name>
+        <servlet-class>muman.servlets.tournament.CreateTournament</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ForumPage</servlet-name>
         <url-pattern>/ForumPage</url-pattern>
@@ -91,6 +99,14 @@
     <servlet-mapping>
         <servlet-name>DeleteReply</servlet-name>
         <url-pattern>/DeleteReply.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JoinTournament</servlet-name>
+        <url-pattern>/JoinTournament.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateTournament</servlet-name>
+        <url-pattern>/CreateTournament.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

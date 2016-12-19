@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import muman.models.Match;
 import muman.models.MatchDetails;
 import muman.models.Player;
+import muman.models.Tournament;
 import muman.models.UserInfo;
 import muman.models.forum.ForumPost;
 import muman.models.forum.Moderator;
@@ -972,6 +973,77 @@ public class DataAccess
              
              
          }
+         
+         public ArrayList<Tournament> getAvailableTournamentsForMe(String username){
+           String sql = "SELECT TOURNAMENT_ID, TOURNAMENT_NAME, START_DATE\n" +
+                        "FROM TOURNAMENT_TABLE TT\n" +
+                        "WHERE CAPACITY > (SELECT COUNT(*)\n" +
+                                            "FROM TOURNAMENT_PARTICIPANTS_TABLE TPT\n" +
+                                            "WHERE TT.TOURNAMENT_ID = TPT.TOURNAMENT_ID)\n" +
+                        "AND (SELECT USER_ID FROM USER_TABLE WHERE USERNAME = ?) NOT IN (SELECT (PLAYER_ID)\n" +
+                                                                        "FROM TOURNAMENT_PARTICIPANTS_TABLE TPT2\n" +
+                                                                        "WHERE TT.TOURNAMENT_ID = TPT2.TOURNAMENT_ID)";
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+           stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<Tournament> tournaments = new ArrayList<>();
+            
+            while(rs.next()){
+                tournaments.add(new Tournament(rs.getInt("TOURNAMENT_ID"), rs.getString("TOURNAMENT_NAME"),
+                        rs.getString("START_DATE"), null, null));
+            }
         
-
+            return tournaments;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }  
+             
+             
+         }
+         
+         public int joinTournament(int tournament_id, String username){
+           String sql = "INSERT INTO TOURNAMENT_PARTICIPANTS_TABLE VALUES(?, "
+                   + "(SELECT USER_ID FROM USER_TABLE WHERE USERNAME = ?) ,NULL)";
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+           stmt.setInt(1, tournament_id);
+           stmt.setString(2, username);
+            int count = stmt.executeUpdate();
+            
+            return count;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return 0;
+            }  
+             
+             
+         }
+        
+        public int createTournament(String name, String start_date, int capacity){
+             
+        try
+        {
+            String insertCommand = "{ ? = call INSERT_TOURNAMENT(?,?,?) }";
+            CallableStatement stmt =  conn.prepareCall(insertCommand);
+            stmt.setString(2, name);
+            stmt.setString(3, start_date);
+            stmt.setInt(4, capacity);
+            
+            stmt.registerOutParameter(1, java.sql.Types.INTEGER);  
+            stmt.execute();
+            
+            int id = (int) stmt.getLong(1);
+            return id;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return 0;
+        }
+       }
 }
