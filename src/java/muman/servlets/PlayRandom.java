@@ -47,11 +47,14 @@ public class PlayRandom extends HttpServlet {
                 rd.forward(request, response);
            }
            else {
-               String player2 = (String) request.getParameter("player2");
+               String player2 = request.getParameter("player2");
+               System.out.println("You are going to play with "+player2);
                DataAccess  db = new DataAccess();
-               if(player2==null || player2.equals(""));
+               if(player2==null || player2.equals("")){
                    player2 = db.getRandomPlayer(username);
-               if(player2==null) request.setAttribute("message","No player available");
+               }
+               if(player2==null) {
+                   request.setAttribute("message","No player available");}
                else{
                 int id = db.addMatch(username, player2);
                    

@@ -4,6 +4,7 @@
     Author     : ab9ma
 --%>
 
+<%@page import="muman.db.DataAccess"%>
 <%@page import="muman.etc.Webpage"%>
 <%@page import="muman.models.PendingMatch"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,6 +20,7 @@
         <%
             String username = (String) session.getAttribute("username");
           
+            
             if(username==null)
             {
                 RequestDispatcher rd = request.getRequestDispatcher(Webpage.login);
@@ -26,14 +28,29 @@
             }
             if(!(Boolean)(session.getAttribute("admin"))) 
                 request.getRequestDispatcher(Webpage.home).forward(request, response);
+            
          %>
-         
+            
+         <%
+             String button = request.getParameter("button");
+             if(button!=null && button.equals("discardall")){
+                (new DataAccess()).deleteAllUnpendingMatches();
+                 RequestDispatcher rd =  request.getRequestDispatcher(Webpage.pendingmatches);
+                rd.forward(request, response);
+            }
+         %>
         <%
             int match_id = Integer.parseInt(request.getParameter("match_id"));
              String player1 = request.getParameter("player1");
              String player2 = request.getParameter("player2");
+             
             if(match_id<=0 || player1 == null || player2==null || player1.equals("") || player2.equals("")){
                 RequestDispatcher rd =  request.getRequestDispatcher(Webpage.home);
+                rd.forward(request, response);
+            }
+            if(button!=null && button.equals("discard")){
+                (new DataAccess()).deleteMatch(match_id);
+                 RequestDispatcher rd =  request.getRequestDispatcher(Webpage.pendingmatches);
                 rd.forward(request, response);
             }
             out.print("Player 1: "+player1);

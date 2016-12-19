@@ -1166,4 +1166,68 @@ public class DataAccess
              
              
          }
+        
+        public int makeMeUnvailable(String username){
+           String sql = "delete from AVAILABLE_TO_PLAY "
+                   + "where player_id = (select user_id "
+                                       + "from USER_TABLE "
+                                       + "where username = ?) ";
+           
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            
+           int count = stmt.executeUpdate();
+        
+            return count;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return -1;
+            }  
+             
+             
+         }
+        
+        
+        
+        public int deleteMatch(int match_id){
+         
+            String query = "DELETE FROM MATCH_TABLE "
+                    + "WHERE MATCH_ID = ?";
+            try{
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setInt(1, match_id);
+                
+                int count = stmt.executeUpdate();
+                return count;
+                
+                
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                return -1;
+            }
+        }
+        
+        public int deleteAllUnpendingMatches(){
+         
+            String query = "DELETE FROM MATCH_TABLE\n" +
+                        "WHERE MATCH_ID IN (SELECT MATCH_ID FROM "
+                                         + "MATCH_PARTICIPANTS_TABLE "
+                                            + "WHERE SCORE IS NULL)";
+            try{
+                PreparedStatement stmt = conn.prepareStatement(query);
+                
+                int count = stmt.executeUpdate();
+                return count;
+                
+                
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                return -1;
+            }
+        }
+        
 }

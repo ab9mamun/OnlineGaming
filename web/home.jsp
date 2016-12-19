@@ -29,15 +29,7 @@
                 rd.forward(request, response);
             }
          %>
-         <!--checking message-->
-         <%
-             String message = (String) request.getAttribute("message");
-             if(message!=null && !message.equals("")){
-                 out.println("Message: "+message+"<br><br>");
-             }
-             %>
-         
-         
+     
          <form action="PlayRandom.do">
              <input type="submit" value="Play Random"></input>
          </form>
@@ -55,21 +47,36 @@
         boolean me_available= false;
     %>
      <form action="PlayRandom.do" method="post">
-       <br><br>Play With Friend: <select name="player2">
+       <br><br>Play With Friend: <select required name="player2">
             <%for(int i=0;i<available.size();i++){
             if(available.get(i).equals(username)){me_available =true; continue;} %>
             
             <option value="<%=available.get(i)%>"><%=available.get(i)%></option>
             <%}%>
-        </select>&nbsp<button type="submit" value="Submit">Play</button>
+        </select>&nbsp<input type="submit" value="Play"></input>
      </form><br><br>
     <%if(me_available==false){%>
      <form action="MakeAvailable.do" method="post">
-        </select>&nbsp<button type="submit" value="Submit">I AM AVAILABLE</button>
+         <input type="hidden" name="i_will_be" value="available"/>
+        <b>You are unavailable</b> <button type="submit" value="Submit">MAKE ME AVAILABLE</button>
     </form>
      <%}
-    else out.print("<h4>You are available</h4>");
-%>
-        
+    else{ %>
+    <form action="MakeAvailable.do" method="post">
+         <input type="hidden" name="i_will_be" value="unavailable"/>
+         <b>You are available</b> <button type="submit" value="Submit">MAKE ME UNAVAILABLE</button>
+    </form>
+     <%}%>
+         <!--checking message-->
+         <%
+             String message = (String) request.getAttribute("message");
+             if(message!=null && !message.equals("")){
+                 out.println("Message: "+message+"<br><br>");
+             }
+             %>
+         
+            
+     
+     
     </body>
 </html>

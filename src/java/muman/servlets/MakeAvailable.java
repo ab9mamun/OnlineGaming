@@ -40,15 +40,22 @@ public class MakeAvailable extends HttpServlet {
            if(username==null){
                request.getRequestDispatcher(Webpage.login).forward(request, response);
            }
-             
-             DataAccess db = new DataAccess();
+           String i_will_be = request.getParameter("i_will_be");
+           DataAccess db = new DataAccess();
+           if(i_will_be!=null && i_will_be.equals("available")){
              int count = db.makeMeAvailable(username);
              if(count>0){
-                 request.setAttribute("messsage", "You are available to play now.");
+                 request.setAttribute("message", "You are available to play now.");
              }
-             
-             request.getRequestDispatcher(Webpage.home).forward(request, response);
           }
+           else if(i_will_be!=null && i_will_be.equals("unavailable")){
+             int count = db.makeMeUnvailable(username);
+             if(count>0){
+                 request.setAttribute("message", "You are unavailable to play now.");
+             }
+          }
+           request.getRequestDispatcher(Webpage.home).forward(request, response);
+      }
       catch(Exception e){
           e.printStackTrace();
       }
