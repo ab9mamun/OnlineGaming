@@ -7,24 +7,19 @@ package muman.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.spi.http.HttpContext;
 import muman.db.DataAccess;
 import muman.etc.Webpage;
-import muman.models.PendingMatch;
 
 /**
  *
  * @author ab9ma
  */
-@WebServlet(name = "PlayRandom", urlPatterns = {"/PlayRandom.do"})
-public class PlayRandom extends HttpServlet {
+public class MakeAvailable extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,35 +33,25 @@ public class PlayRandom extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       PrintWriter out = response.getWriter();
-       try{
+         PrintWriter out = response.getWriter();
+      try{
            HttpSession session = request.getSession();
            String username = (String) session.getAttribute("username");
            if(username==null){
-               RequestDispatcher rd = request.getRequestDispatcher(Webpage.login);
-                rd.forward(request, response);
+               request.getRequestDispatcher(Webpage.login).forward(request, response);
            }
-           else {
-               String player2 = (String) request.getParameter("player2");
-               DataAccess  db = new DataAccess();
-               if(player2==null || player2.equals(""));
-                   player2 = db.getRandomPlayer(username);
-               if(player2==null) request.setAttribute("message","No player available");
-               else{
-                int id = db.addMatch(username, player2);
-                   
-                if(id>0) request.setAttribute("message", "Match has been played with "+player2+", Admin will announce the result.");
-                else request.setAttribute("message", "Sorry, Match was not played.");
-               }
-                RequestDispatcher rd = request.getRequestDispatcher(Webpage.home);
-                
-                rd.forward(request, response);
-               
-           }
-        }
-       catch(Exception e){
-           e.printStackTrace();
-       }
+             
+             DataAccess db = new DataAccess();
+             int count = db.makeMeAvailable(username);
+             if(count>0){
+                 request.setAttribute("messsage", "You are available to play now.");
+             }
+             
+             request.getRequestDispatcher(Webpage.home).forward(request, response);
+          }
+      catch(Exception e){
+          e.printStackTrace();
+      }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -29,7 +29,8 @@
 //    matches.add(new Match(12,"asd","dasd"));
 //    matches.add(new Match(12,"asd","dasd"));
 
-    if(matches!=null)
+    if(matches!=null){
+        out.print("<h5>Total "+matches.size()+" Matches Pending</h5>");
     for(int i=0;i<matches.size();i++){
         PendingMatch cur=matches.get(i);
 %>
@@ -37,9 +38,9 @@
     <input type="hidden" name="player1" value="<%=cur.getPlayer1()%>">
     <input type="hidden" name="player2" value="<%=cur.getPlayer2()%>">
     <input type="hidden" name="match_id" value="<%=cur.getId()%>"><!--may need to change here :)-->
-<%=cur.getPlayer1()%>&nbspVS&nbsp<%=cur.getPlayer2()%>&nbsp<button type="submit" value="Submit">MAKE THEM PLAY</button>
+<%=cur.getDate()%>&nbsp->&nbsp<%=cur.getPlayer1()%>&nbspVS&nbsp<%=cur.getPlayer2()%>&nbsp<button type="submit" value="Submit">MAKE THEM PLAY</button>
 </form>
-<%}%>
+<%}}%>
 
 
 

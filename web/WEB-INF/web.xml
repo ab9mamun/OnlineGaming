@@ -20,6 +20,10 @@
         <servlet-name>CreateTournament</servlet-name>
         <servlet-class>muman.servlets.tournament.CreateTournament</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MakeAvailable</servlet-name>
+        <servlet-class>muman.servlets.MakeAvailable</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ForumPage</servlet-name>
         <url-pattern>/ForumPage</url-pattern>
@@ -48,7 +52,6 @@
         <servlet-name>PlayerInfo</servlet-name>
         <jsp-file>/PlayerInfo.jsp</jsp-file>
     </servlet>
-    
     <servlet>
         <servlet-name>PlayMatch</servlet-name>
         <jsp-file>/playMatch.jsp</jsp-file>
@@ -57,7 +60,6 @@
         <servlet-name>PlayMatch</servlet-name>
         <url-pattern>/PlayMatch</url-pattern>
     </servlet-mapping>
-    
     <servlet>
         <servlet-name>MANAGE_SECTIONS</servlet-name>
         <jsp-file>/Manage_Sections.jsp</jsp-file>
@@ -117,6 +119,10 @@
     <servlet-mapping>
         <servlet-name>CreateTournament</servlet-name>
         <url-pattern>/CreateTournament.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MakeAvailable</servlet-name>
+        <url-pattern>/MakeAvailable.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

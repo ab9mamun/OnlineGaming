@@ -39,6 +39,10 @@ public class WinnerProcess extends HttpServlet {
     PrintWriter out = response.getWriter();
       try{
            HttpSession session = request.getSession();
+           String username = (String) session.getAttribute("username");
+           if(username==null){
+               request.getRequestDispatcher(Webpage.login).forward(request, response);
+           }
            
              int match_id = Integer.parseInt(request.getParameter("match_id"));
              String player1 = request.getParameter("player1");
@@ -50,7 +54,7 @@ public class WinnerProcess extends HttpServlet {
              DataAccess db = new DataAccess();
              db.updateMatch(match_id, player1,score1, player2,  score2);
              
-             request.getRequestDispatcher(Webpage.home).forward(request, response);
+             request.getRequestDispatcher(Webpage.pendingmatches).forward(request, response);
           }
       catch(Exception e){
           e.printStackTrace();

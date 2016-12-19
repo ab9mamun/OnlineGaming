@@ -27,7 +27,7 @@
         <h1>MATCH HISTORY</h1>
         <%
             MatchDetails match;
-            ArrayList<MatchDetails> matches = (new DataAccess()).getAllMatches();
+            ArrayList<MatchDetails> matches = (new DataAccess()).getAllFinishedMatches();
             if(matches!=null) {
              out.println("<h3>TOTAL MATCH FOUND: "+matches.size()+"</h3>");
             for(int i=0; i<matches.size(); i++){

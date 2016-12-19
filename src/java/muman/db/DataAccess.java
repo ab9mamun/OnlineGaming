@@ -139,7 +139,8 @@ public class DataAccess
         
          try
         {
-            String query = "select username from user_table where username <> ?";
+            String query = "select username from user_table where username <> ? "
+                    + " and user_id in (select player_id from available_to_play )";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, player1);
          
@@ -884,7 +885,7 @@ public class DataAccess
              
              try{
                  
-                 ArrayList<MatchDetails> matches = getAllMatches();
+                 ArrayList<MatchDetails> matches = getAllFinishedMatches();
                  MatchDetails required = matches.get(0);
                  MatchDetails cur;
                  for(int i=1; i<matches.size(); i++){
@@ -908,7 +909,7 @@ public class DataAccess
              
              try{
                  
-                 ArrayList<MatchDetails> matches = getAllMatches();
+                 ArrayList<MatchDetails> matches = getAllFinishedMatches();
                  MatchDetails required = matches.get(0);
                  MatchDetails cur;
                  for(int i=1; i<matches.size(); i++){
@@ -933,7 +934,7 @@ public class DataAccess
          
          
          
-         public ArrayList<MatchDetails> getAllMatches(){
+         public ArrayList<MatchDetails> getAllFinishedMatches(){
              
              String sql = "SELECT MT.MATCH_ID, MT.SCORE SCORE1, MT2.SCORE SCORE2, \n" +
                             "(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT.PLAYER_ID) PLAYER1,\n" +
@@ -942,7 +943,8 @@ public class DataAccess
                             "M_T.MATCH_DATE M_DATE\n" +
                             "\n" +
                             "FROM MATCH_PARTICIPANTS_TABLE MT JOIN MATCH_PARTICIPANTS_TABLE MT2\n" +
-                            "ON(MT.MATCH_ID = MT2.MATCH_ID AND MT.PLAYER_ID < MT2.PLAYER_ID)\n" +
+                            "ON(MT.MATCH_ID = MT2.MATCH_ID AND MT.PLAYER_ID < MT2.PLAYER_ID "
+                           + "AND MT.SCORE IS NOT NULL AND MT2.SCORE IS NOT NULL)\n" +
                             "\n" +
                             "JOIN MATCH_TABLE M_T\n" +
                             "ON (MT.MATCH_ID = M_T.MATCH_ID) "
@@ -1083,14 +1085,17 @@ public class DataAccess
                         "\n" +
                         "(SELECT USERNAME\n" +
                         "FROM USER_TABLE\n" +
-                        "WHERE USER_ID = T2.PLAYER_ID) PLAYER2\n" +
+                        "WHERE USER_ID = T2.PLAYER_ID) PLAYER2,\n" +
+                        "(SELECT MATCH_DATE\n" +
+                        "FROM MATCH_TABLE T3\n" +
+                        "WHERE T1.MATCH_ID = T3.MATCH_ID) M_DATE\n" +
                         "\n" +
                         "FROM MATCH_PARTICIPANTS_TABLE T1\n" +
                         "JOIN\n" +
                         "MATCH_PARTICIPANTS_TABLE T2\n" +
-                        "ON (T1.MATCH_ID = T2.MATCH_ID "
-                        + "AND T1.PLAYER_ID <T2.PLAYER_ID "
-                         + "AND (T1.SCORE IS NULL OR T2.SCORE IS NULL))";
+                        "ON (T1.MATCH_ID = T2.MATCH_ID AND T1.PLAYER_ID <T2.PLAYER_ID \n" +
+                        "AND (T1.SCORE IS NULL OR T2.SCORE IS NULL)) "
+                      + "ORDER BY M_DATE ASC ";
            
             try{
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -1100,7 +1105,7 @@ public class DataAccess
             
             while(rs.next()){
                 matches.add(new PendingMatch(rs.getInt("M_ID"), rs.getString("PLAYER1"),
-                        rs.getString("PLAYER2")));
+                        rs.getString("PLAYER2"), rs.getString("M_DATE")));
             }
         
             return matches;
@@ -1108,6 +1113,55 @@ public class DataAccess
         catch(Exception e){
                 e.printStackTrace();
                 return null;
+            }  
+             
+             
+         }
+        
+        public ArrayList<String> getAvailablePlayers(){
+           String sql = "SELECT USERNAME "
+                       + "FROM USER_TABLE "
+                        + "WHERE USER_ID IN (SELECT PLAYER_ID "
+                         + "FROM AVAILABLE_TO_PLAY )";
+           
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<String> list = new ArrayList<>();
+            
+            while(rs.next()){
+                list.add(rs.getString("USERNAME"));
+            }
+        
+            return list;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }  
+             
+             
+         }
+        
+        public int makeMeAvailable(String username){
+           String sql = "insert into AVAILABLE_TO_PLAY values ( "
+                   + "(select user_id "
+                   + "from USER_TABLE "
+                   + "where username = ?) "
+                   + ")";
+           
+            try{
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
+            
+           int count = stmt.executeUpdate();
+        
+            return count;
+        }
+        catch(Exception e){
+                e.printStackTrace();
+                return -1;
             }  
              
              
