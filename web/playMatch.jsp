@@ -34,7 +34,7 @@
          <%
              String button = request.getParameter("button");
              if(button!=null && button.equals("discardall")){
-                (new DataAccess()).deleteAllUnpendingMatches();
+                (new DataAccess()).deleteAllPendingMatches();
                  RequestDispatcher rd =  request.getRequestDispatcher(Webpage.pendingmatches);
                 rd.forward(request, response);
             }

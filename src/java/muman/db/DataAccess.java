@@ -1094,8 +1094,10 @@ public class DataAccess
                         "JOIN\n" +
                         "MATCH_PARTICIPANTS_TABLE T2\n" +
                         "ON (T1.MATCH_ID = T2.MATCH_ID AND T1.PLAYER_ID <T2.PLAYER_ID \n" +
-                        "AND (T1.SCORE IS NULL OR T2.SCORE IS NULL)) "
-                      + "ORDER BY M_DATE ASC ";
+                        "AND (T1.SCORE IS NULL OR T2.SCORE IS NULL))\n" +
+                        "WHERE T1.MATCH_ID NOT IN (SELECT MATCH_ID\n" +
+                                                    "FROM TOURNAMENT_MATCH_TABLE) \n" +
+                        "ORDER BY M_DATE ASC ";
            
             try{
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -1194,7 +1196,7 @@ public class DataAccess
         public int deleteMatch(int match_id){
          
             String query = "DELETE FROM MATCH_TABLE "
-                    + "WHERE MATCH_ID = ?";
+                    + "WHERE MATCH_ID = ? ";
             try{
                 PreparedStatement stmt = conn.prepareStatement(query);
                 stmt.setInt(1, match_id);
@@ -1210,12 +1212,14 @@ public class DataAccess
             }
         }
         
-        public int deleteAllUnpendingMatches(){
+        public int deleteAllPendingMatches(){
          
             String query = "DELETE FROM MATCH_TABLE\n" +
                         "WHERE MATCH_ID IN (SELECT MATCH_ID FROM "
                                          + "MATCH_PARTICIPANTS_TABLE "
-                                            + "WHERE SCORE IS NULL)";
+                                            + "WHERE SCORE IS NULL)"
+                            + "AND MATCH_ID NOT IN (SELECT MATCH_ID FROM "
+                                          + "TOURNAMENT_MATCH_TABLE)";
             try{
                 PreparedStatement stmt = conn.prepareStatement(query);
                 
@@ -1228,6 +1232,31 @@ public class DataAccess
                 e.printStackTrace();
                 return -1;
             }
+        }
+        
+        
+        public ArrayList<Tournament> getAllUnfinishedTournaments(){
+            
+            String sql = "";
+                    
+           try{
+               
+               PreparedStatement stmt = conn.prepareStatement(sql);
+               
+               ArrayList<Tournament> tournaments = new ArrayList<>();
+               ResultSet rs = stmt.executeQuery();
+               while(rs.next()){
+                   
+                   tournaments.add(new Tournament(rs.getInt("TOURNAMENT_ID"), rs.getString("TOURNAMENT_NAME"),
+                        rs.getString("START_DATE"), null, null));
+               }
+               
+               return tournaments;
+           }
+           catch(Exception e){
+           return null;
+           }
+            
         }
         
 }

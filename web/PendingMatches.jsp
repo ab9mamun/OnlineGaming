@@ -34,7 +34,7 @@
         <h5>Total <%=matches.size()%> Matches Pending</h5>
         <form action="<%=Webpage.playmatch%>" method="post">
             <button type="submit" name="button" value="discardall">Discard All</button>
-            
+      
         </form>
                 
         
