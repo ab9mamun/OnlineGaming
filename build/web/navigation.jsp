@@ -1,6 +1,13 @@
 
 <%@page import="muman.db.DataAccess"%>
 <%@page import="muman.etc.Webpage"%>
+
+
+<style>
+    span{
+         text-align:right;
+    }
+</style>
 <%
     String username = (String) session.getAttribute("username");
     if(username==null) request.getRequestDispatcher(Webpage.login).forward(request, response);  
@@ -13,12 +20,12 @@
    out.print(Webpage.make(Webpage.tournamenthistory, "TournamentHistory")+" ");
    %>
    &nbsp;&nbsp;You are logged in as <%=username%>
-    &nbsp<div align="right">
+    &nbsp<span>
         <%
     out.print(Webpage.make(Webpage.forum, "Forum")+" "); 
     out.print(Webpage.make(Webpage.logout, "Logout")+" "); 
     %>
-    </div>
+    </span>
     <br>
     <%
     if((new DataAccess()).isAdmin(username)){
