@@ -200,6 +200,7 @@ public class DataAccess
 
 
         statement.execute();   
+        //   achivementChecker()
         }
         catch(SQLException e){
         }
@@ -815,12 +816,17 @@ public class DataAccess
     
     public Player getBestPlayerInMyRegion(String username){
         
-        String sql = "SELECT USERNAME, RATING, MATCH_COUNT, WIN_COUNT, BEST_SCORE, TOTAL_XP \n" +
-                        "FROM USER_TABLE JOIN PLAYER_TABLE ON (PLAYER_ID = USER_ID)\n" +
-                        "WHERE RATING = (SELECT NVL(MAX(RATING),0)\n" +
-                        "                FROM PLAYER_TABLE )\n" +
-                        " AND REGION = (SELECT REGION FROM USER_TABLE WHERE USERNAME = ?)\n" +
-                        "ORDER BY WIN_COUNT DESC";
+        String sql = "SELECT USERNAME, RATING, MATCH_COUNT, WIN_COUNT, BEST_SCORE, TOTAL_XP\n" +
+                    "FROM USER_TABLE JOIN PLAYER_TABLE ON (PLAYER_ID = USER_ID)\n" +
+                    "WHERE RATING = (SELECT NVL(MAX(RATING),0)\n" +
+                                    "FROM PLAYER_TABLE T2\n" +
+                                    "WHERE PLAYER_ID IN (SELECT USER_ID\n" +
+                                                        "FROM USER_TABLE WHERE\n" +
+                                                        "REGION = (SELECT REGION \n" +
+                                                                    "FROM USER_TABLE\n" +
+                                                                    "WHERE USERNAME=?))\n" +
+                    ")\n" +
+                    "ORDER BY WIN_COUNT DESC";
         try{
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, username);
