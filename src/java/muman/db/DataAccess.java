@@ -200,7 +200,8 @@ public class DataAccess
 
 
         statement.execute();   
-        //   achivementChecker()
+           achievementChecker(player1);
+           achievementChecker(player2);
         }
         catch(SQLException e){
         }
@@ -1340,10 +1341,53 @@ public class DataAccess
 
 
 
-        statement.execute();   
+        statement.execute();  
+        
+        //-----------------
+        achievementChecker(player1);
+        achievementChecker(player2);
+        //-------
         }
         catch(SQLException e){
         }
     }
+        
+        public int achievementChecker(String username){
+         String query = "SELECT USER_ID FROM USER_TABLE "
+                 + "WHERE USERNAME = ? ";
+            try{
+                PreparedStatement stmt = conn.prepareStatement(query);
+                stmt.setString(1, username);
+                
+                ResultSet rs = stmt.executeQuery();
+                int id=0;
+                if(rs.next()){
+                    id = rs.getInt("user_id"); 
+                }
+                
+                String sql = "{? = call ACH_WIN_5(?) }";
+                String sql2 = "{? = call ACH_PLAY_5(?) }";
+                CallableStatement statement = conn.prepareCall(sql);
+                CallableStatement statement2 = conn.prepareCall(sql2);
+                
+                statement.setInt(2, id);
+                statement2.setInt(2, id);
+                
+                statement.registerOutParameter(1, java.sql.Types.INTEGER);
+                statement2.registerOutParameter(1, java.sql.Types.INTEGER);
+                statement.execute();
+                statement2.execute();
+           
+                return (int) statement2.getLong(1);
+                
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                return -1;
+            }   
+            
+            
+            
+        }
         
 }
