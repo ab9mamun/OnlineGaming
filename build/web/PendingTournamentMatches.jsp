@@ -18,6 +18,7 @@
        <%
            String tournament_id = request.getParameter("tournament_id");
             String tournament_name = request.getParameter("tournament_name");
+
        %>
     <h1><%=tournament_name%></h1>
     
@@ -46,6 +47,8 @@
         PendingTournamentMatch cur=matches.get(i);
 %>
 <form action="<%=Webpage.playtournamentmatch%>" method="post">
+    <input type="hidden" name="tournament_id" value="<%=tournament_id%>">
+    <input type="hidden" name="tournament_name" value="<%=tournament_name%>">
     <input type="hidden" name="player1" value="<%=cur.getPlayer1()%>">
     <input type="hidden" name="player2" value="<%=cur.getPlayer2()%>">
     <input type="hidden" name="match_id" value="<%=cur.getId()%>"><!--may need to change here :)-->

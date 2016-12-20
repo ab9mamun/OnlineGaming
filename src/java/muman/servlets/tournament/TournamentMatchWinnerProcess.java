@@ -41,6 +41,9 @@ public class TournamentMatchWinnerProcess extends HttpServlet {
                request.getRequestDispatcher(Webpage.login).forward(request, response);
            }
            
+            request.setAttribute("tournament_id", request.getParameter("tournament_id"));
+            request.setAttribute("tournament_name", request.getParameter("tournament_name"));
+            
              int match_id = Integer.parseInt(request.getParameter("match_id"));
              String player1 = request.getParameter("player1");
              String player2 = request.getParameter("player2");
@@ -49,9 +52,9 @@ public class TournamentMatchWinnerProcess extends HttpServlet {
              int score2 = Integer.parseInt(request.getParameter("score2"));
              
              DataAccess db = new DataAccess();
-             db.updateMatch(match_id, player1,score1, player2,  score2);
+             db.updateTournamentMatch(match_id, player1,score1, player2,  score2);
              
-             request.getRequestDispatcher(Webpage.pendingmatches).forward(request, response);
+             request.getRequestDispatcher(Webpage.pendingtournaments).forward(request, response);
           }
       catch(Exception e){
           e.printStackTrace();

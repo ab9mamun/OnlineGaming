@@ -1005,19 +1005,20 @@ public class DataAccess
          }
          
          public int joinTournament(int tournament_id, String username){
-           String sql = "INSERT INTO TOURNAMENT_PARTICIPANTS_TABLE VALUES(?, "
-                   + "(SELECT USER_ID FROM USER_TABLE WHERE USERNAME = ?) ,NULL)";
+           String sql = "{? = call INSERT_TOURNAMENT_PARTICIPANT(?,?)}";
             try{
-            PreparedStatement stmt = conn.prepareStatement(sql);
-           stmt.setInt(1, tournament_id);
-           stmt.setString(2, username);
-            int count = stmt.executeUpdate();
+            CallableStatement stmt = conn.prepareCall(sql);
+           stmt.setInt(2, tournament_id);
+           stmt.setString(3, username);
+           stmt.registerOutParameter(1, java.sql.Types.INTEGER);
+           stmt.execute();
             
+            int count = (int) stmt.getLong(1);
             return count;
         }
         catch(Exception e){
                 e.printStackTrace();
-                return 0;
+                return -1;
             }  
              
              
@@ -1320,5 +1321,23 @@ public class DataAccess
              
              
          }
+        
+        public void updateTournamentMatch(int match_id, String player1,int score1, String player2,  int score2) {
+        String sql = "{ call UPDATE_TOURNAMENT_MATCH(?,?,?,?,?) }";
+        try{
+        CallableStatement statement = conn.prepareCall(sql);
+        statement.setInt(1,match_id);
+        statement.setString(2,player1);
+        statement.setInt(3,score1);
+        statement.setString(4,player2);
+        statement.setInt(5,score2);
+
+
+
+        statement.execute();   
+        }
+        catch(SQLException e){
+        }
+    }
         
 }
