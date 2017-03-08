@@ -4,21 +4,26 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/profile.jsp</file>
-            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/Torunament_History.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/PendingMatch.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/PlayerInfo.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/index.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/tournament/TournamentMatchWinnerProcess.java</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/tournament/CreateTournament.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/logout.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/WinnerProcess.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/db/DataAccess.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/navigation.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/Tournament_History.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/Player.java</file>
-            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/playRandom.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/UserInfo.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/ForumReplyPage.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/tournament/JoinTournament.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/InformationPage.jsp</file>
-            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/Match.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/ForumPage.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/MakeAvailable.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/forum/PostReply.java</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/PendingTournamentMatch.java</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/playMatch.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/Manage_Sections.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/forum/ForumPost.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/LoginProcess.java</file>
@@ -27,12 +32,16 @@
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/MatchDetails.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/createAccount.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/Available_Tournaments.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/WEB-INF/web.xml</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/servlets/CreateAccount.java</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/PendingTournamentMatches.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/home.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/PendingTournaments.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/AdminPage.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/MatchHistory.jsp</file>
-            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/Tournament.java</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/web/PendingMatches.jsp</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/models/Tournament.java</file>
+            <file>file:/F:/_Workplace/_Git/OnlineGaming/web/PlayTournamentMatch.jsp</file>
             <file>file:/F:/_Workplace/_Git/OnlineGaming/src/java/muman/etc/Webpage.java</file>
         </group>
     </open-files>

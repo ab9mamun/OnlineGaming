@@ -1,0 +1,56 @@
+SELECT * FROM USER_TABLE;
+SELECT * FROM Admin_Table;
+
+SELECT * FROM PLAYER_TABLE;
+SELECT * FROM Section_Table;
+SELECT * FROM Moderator_Table;
+
+SELECT * FROM Forum_Post_Table;
+
+SELECT * FROM Forum_Reply_Table;
+
+SELECT * FROM Post_Flag_Table;
+SELECT * FROM Reply_Flag_Table;
+
+SELECT * FROM Admin_Phone_Table;
+SELECT * FROM Match_Table order by match_date desc;
+SELECT * FROM Tournament_Table;
+SELECT * FROM Achievement_Table;
+SELECT * FROM Player_Achievement_Table;
+SELECT * FROM Tournament_Match_Table;
+SELECT * FROM MATCH_PARTICIPANTS_TABLE;
+
+
+SELECT * FROM TOURNAMENT_PARTICIPANTS_TABLE;-- where TOURNAMENT_ID=1;
+SELECT * FROM AVAILABLE_TO_PLAY;
+
+
+
+
+
+
+DELETE FROM USER_TABLE;
+DELETE FROM Admin_Table;
+
+DELETE FROM PLAYER_TABLE;
+DELETE FROM Section_Table;
+DELETE FROM Moderator_Table;
+
+DELETE FROM Forum_Post_Table;
+
+DELETE FROM Forum_Reply_Table;
+
+DELETE FROM Post_Flag_Table;
+DELETE FROM Reply_Flag_Table;
+DELETE FROM Admin_Phone_Table;
+DELETE FROM Match_Table;
+DELETE FROM Tournament_Table;
+DELETE FROM Achievement_Table;
+DELETE FROM Player_Achievement_Table;
+DELETE FROM Tournament_Match_Table;
+DELETE FROM MATCH_PARTICIPANTS_TABLE;
+
+
+DELETE FROM TOURNAMENT_PARTICIPANTS_TABLE;
+DELETE FROM AVAILABLE_TO_PLAY;
+

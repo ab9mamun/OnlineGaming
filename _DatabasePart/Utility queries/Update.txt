@@ -1,0 +1,7 @@
+update USER_TABLE
+set region = 'Dhaka'
+where username = 'arko';
+
+UPDATE SECTION_TABLE
+SET SECTION_NAME = 'Ugly'
+WHERE SECTION_NAME = 'ugliness';

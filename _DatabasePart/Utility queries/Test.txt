@@ -1,0 +1,286 @@
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_USER('numan', 'Numan', '43', 'numan@gmil.com', '24/jan/1996', 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_MATCH('mamun', 'numan'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_SECTION('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_MODERATOR('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_FORUM_POST('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_FORUM_REPLY('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_POST_FLAG('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_REPLY_FLAG('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_ADMIN_PHONE('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_MATCH('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_TOURNAMENT('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_ACHIEVEMENT('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_PLAYER_ACHIEVEMENT('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INSERT_TOURNAMENT_MATCH('muttakin', 'Muttakin', '9', 'muttakin@gmil.com', sysdate, 'dhaka'); 
+	PRINT(A);
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+ A:=INsert_section('figure');
+	PRINT(A);
+END;
+/
+DECLARE
+A NUMBER;
+BEGIN
+ flag_post(2, 'mamun');
+	PRINT(A);
+END;
+/
+
+
+select count(*) total
+from POST_FLAG_TABLE
+where post_id = '1';
+
+alter table FORUM_POST_TABLE drop (view_count);
+
+
+insert into MODERATOR_TABLE values(2, 2);
+
+select username, section_name from user_table join moderator_table
+on (user_id = moderator_id) 
+join section_table
+on (moderating_section = section_id)
+
+
+
+insert into ADMIN_TABLE values(2);
+
+SELECT ACHIEVEMENT_DESCRIPTION 
+FROM ACHIEVEMENT_TABLE
+WHERE ACHIEVEMENT_ID IN 
+(SELECT ACHIEVEMENT_ID 
+FROM PLAYER_ACHIEVEMENT_TABLE 
+WHERE PLAYER_ID = (SELECT USER_ID 
+FROM USER_TABLE 
+WHERE USERNAME = 'mamun' ) );
+
+
+
+SELECT USERNAME, RATING, MATCH_COUNT, WIN_COUNT, BEST_SCORE, TOTAL_XP 
+FROM USER_TABLE JOIN PLAYER_TABLE ON (PLAYER_ID = USER_ID)
+WHERE RATING = (SELECT NVL(MAX(RATING),0)
+                FROM PLAYER_TABLE )
+ORDER BY WIN_COUNT DESC
+
+
+update player_table
+set rating = 100
+where player_id = (select user_id from user_table where username = 'numan')
+
+
+SELECT COUNT(MATCH_ID)
+FROM MATCH_TABLE
+WHERE TO_CHAR(MATCH_DATE,'DD/MON/YYYY') = TO_CHAR(SYSDATE, 'DD/MON/YYYY');
+
+--========================================================================
+SELECT MT.MATCH_ID, MT.SCORE SCORE1, MT2.SCORE SCORE2, 
+(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT.PLAYER_ID) PLAYER1,
+(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT2.PLAYER_ID) PLAYER2,
+
+M_T.MATCH_DATE
+
+FROM MATCH_PARTICIPANTS_TABLE MT JOIN MATCH_PARTICIPANTS_TABLE MT2
+ON(MT.MATCH_ID = MT2.MATCH_ID AND MT.PLAYER_ID < MT2.PLAYER_ID)
+
+JOIN MATCH_TABLE M_T
+ON (MT.MATCH_ID = M_T.MATCH_ID)
+
+--===============================================================
+SELECT MT.MATCH_ID, MT.SCORE SCORE1, MT2.SCORE SCORE2, 
+(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT.PLAYER_ID) PLAYER1,
+(SELECT USERNAME FROM USER_TABLE WHERE USER_ID = MT2.PLAYER_ID) PLAYER2,
+
+M_T.MATCH_DATE
+
+FROM MATCH_PARTICIPANTS_TABLE MT JOIN MATCH_PARTICIPANTS_TABLE MT2
+ON(MT.MATCH_ID = MT2.MATCH_ID AND MT.PLAYER_ID < MT2.PLAYER_ID)
+
+JOIN MATCH_TABLE M_T
+ON (MT.MATCH_ID = M_T.MATCH_ID)
+
+
+
+
+
+
+
+
+
+
+
+DECLARE
+A NUMBER;
+BEGIN
+A := INSERT_TOURNAMENT('second tournament', '13/DEC/2016', 4);
+END;
+/
+
+insert into TOURNAMENT_PARTICIPANTS_TABLE values(1,1,null)
+
+UPDATE TOURNAMENT_PARTICIPANTS_TABLE SET POSITION= NULL WHERE TOURNAMENT_ID = 2
+
+update MATCH_PARTICIPANTS_TABLE set score = null where score = 0
+
+
+delete from MATCH_TABLE
+where match_id in (select match_id from MATCH_PARTICIPANTS_TABLE where score is null)
+
+
+select to_date('14/12/2016 12:24:30', 'dd/mm/yyyy hh:mi:ss') from dual;
+
+insert into TOURNAMENT_MATCH_TABLE values(26, 1,1);
+delete from match_table where match_id = 26;
+insert into match_table values(26, sysdate);
+insert into MATCH_PARTICIPANTS_TABLE values(26, 2, null, null);
+
+
+SELECT FLOOR((SYSDATE - TO_DATE('12/JAN/2015'))+10)DAYS_BETWEEN FROM DUAL;
+
+
+insert into TOURNAMENT_PARTICIPANTS_TABLE 
+values(1, (select user_id 
+from user_table 
+where username = 'mamun'), null);
+
+
+UPDATE PLAYER_TABLE
+SET RATING = 0;
+
+
+INSERT INTO ADMIN_PHONE_TABLE VALUES(2,'1123545')
+
+UPDATE USER_TABLE
+SET REGION = 'Sylhet'
+where username = 'arko';
+
+
+SELECT USERNAME, RATING, MATCH_COUNT, WIN_COUNT, BEST_SCORE, TOTAL_XP
+FROM USER_TABLE JOIN PLAYER_TABLE ON (PLAYER_ID = USER_ID)
+WHERE RATING = (SELECT NVL(MAX(RATING),0)
+FROM PLAYER_TABLE T2
+WHERE PLAYER_ID IN (SELECT USER_ID
+FROM USER_TABLE WHERE
+REGION = (SELECT REGION 
+FROM USER_TABLE
+WHERE USERNAME='arko'))
+)
+ORDER BY WIN_COUNT DESC
+
+SELECT * FROM USER_TABLE;
+
+DECLARE
+A NUMBER;
+BEGIN
+A := INSERT_ACHIEVEMENT('ACH_PLAY_5', 10, 'Play 5 matches');
+END;
+/
+
+DECLARE
+A NUMBER;
+BEGIN
+A := INSERT_ACHIEVEMENT('ACH_WIN_5', 30, 'Win 5 matches');
+END;
+/
+
+SELECT * FROM PLAYER_ACHIEVEMENT_TABLE

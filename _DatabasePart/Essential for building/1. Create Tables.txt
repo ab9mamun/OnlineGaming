@@ -1,0 +1,211 @@
+CREATE TABLE User_Table(
+	user_id NUMBER PRIMARY KEY, --, CHANGED TO NUMBER //sequence and trigger
+	username VARCHAR2(50) UNIQUE NOT NULL,  --ADDED
+	user_full_name VARCHAR2(50) NOT NULL,
+	password VARCHAR2(50) NOT NULL,
+	email VARCHAR2(50) UNIQUE NOT NULL ,
+	register_date DATE DEFAULT SYSDATE,
+	birth_date DATE DEFAULT SYSDATE,
+	region VARCHAR2(60),
+	status VARCHAR2(20) DEFAULT 'active', --ref mamun
+
+	CONSTRAINT UT_EMAIL CHECK (email LIKE '%_@_%._%')
+	--CONSTRAINT UT_PASS CHECK( password LIKE '%______') 6 LENGTH PASSWORD (NOT ACTIVATED FOR SIMPLICITY
+);
+
+CREATE TABLE Admin_Table(
+	admin_id NUMBER PRIMARY KEY,
+		--??(devid) what more?? mamun??
+	CONSTRAINT A_T FOREIGN KEY (admin_id) REFERENCES User_Table(user_id)
+	ON DELETE CASCADE --ON UPDATE CASCADE :( oracle seems to be not allowing it :/
+
+);
+
+CREATE TABLE Player_Table(
+	player_id NUMBER PRIMARY KEY,
+
+
+	rating NUMBER DEFAULT 0,
+	match_count NUMBER DEFAULT 0,
+	win_count NUMBER DEFAULT 0,
+	best_score NUMBER DEFAULT 0,
+	total_xp NUMBER DEFAULT 0,
+		--??(devid) what more?? mamun??
+
+	CONSTRAINT P_T FOREIGN KEY (player_id) REFERENCES User_Table(user_id)
+	ON DELETE CASCADE
+
+);
+
+CREATE TABLE Section_Table(
+	section_id NUMBER PRIMARY KEY,  --sequence
+	section_name VARCHAR2(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE Moderator_Table(
+	moderator_id NUMBER PRIMARY KEY,
+	moderating_section NUMBER,
+
+	CONSTRAINT M_T1 FOREIGN KEY(moderating_section) REFERENCES Section_Table(section_id)
+	ON DELETE SET NULL,
+	CONSTRAINT M_T2 FOREIGN KEY(moderator_id) REFERENCES User_Table(user_id)
+	ON DELETE CASCADE
+);
+
+CREATE TABLE Forum_Post_Table(
+	post_id NUMBER PRIMARY KEY,  ---sequence
+	post_title VARCHAR2(100),
+	post_content VARCHAR2(3000),
+	post_date DATE DEFAULT SYSDATE,
+	section_id 	NUMBER,
+	posted_by_id NUMBER, --mamun??
+
+	CONSTRAINT F_P_T1 FOREIGN KEY(section_id) REFERENCES Section_Table(section_id)
+	ON DELETE SET NULL,
+	CONSTRAINT F_P_T2 FOREIGN KEY(posted_by_id) REFERENCES User_Table(user_id)
+	ON DELETE SET NULL
+);
+
+CREATE TABLE Forum_Reply_Table(
+	post_id NUMBER ,
+	reply_id NUMBER  ,   --will be handled by a trigger
+	replied_by NUMBER,
+	reply_content VARCHAR2(3000),
+	reply_date DATE DEFAULT SYSDATE,
+
+
+
+	CONSTRAINT F_R_T1 PRIMARY KEY(post_id, reply_id),
+
+	CONSTRAINT F_R_T2 FOREIGN KEY (post_id) REFERENCES Forum_Post_Table(post_id)
+	ON DELETE CASCADE,
+
+
+	CONSTRAINT F_R_T3 FOREIGN KEY(replied_by) REFERENCES User_Table(user_id)
+	ON DELETE SET NULL
+);
+
+CREATE TABLE Post_Flag_Table(
+	post_id NUMBER,
+	reporter_id NUMBER,
+
+	CONSTRAINT P_F_T1 UNIQUE(post_id,reporter_id),
+
+	CONSTRAINT P_F_T2 FOREIGN KEY(post_id) REFERENCES Forum_Post_Table(post_id)
+	ON DELETE CASCADE,
+
+	CONSTRAINT P_F_T3 FOREIGN KEY(reporter_id) REFERENCES User_Table(user_id)
+	ON DELETE SET NULL
+);
+
+CREATE TABLE Reply_Flag_Table(
+	post_id NUMBER NOT NULL,
+	reply_id NUMBER NOT NULL,
+	reporter_id NUMBER,
+
+	CONSTRAINT R_F_T1  UNIQUE(post_id,reply_id,reporter_id),
+
+	CONSTRAINT R_F_T3 FOREIGN KEY(post_id, reply_id) REFERENCES Forum_Reply_Table(post_id, reply_id)
+	ON DELETE CASCADE,
+
+	CONSTRAINT R_F_T4 FOREIGN KEY(reporter_id) REFERENCES User_Table(user_id)
+	ON DELETE SET NULL
+);
+
+CREATE TABLE Admin_Phone_Table(
+	admin_id NUMBER NOT NULL,
+	phone_number VARCHAR2(20),
+
+	CONSTRAINT A_P_T1 PRIMARY KEY(phone_number),
+
+	CONSTRAINT A_P_T2 FOREIGN KEY(admin_id) REFERENCES Admin_Table(admin_id)
+	ON DELETE CASCADE
+
+);
+
+CREATE TABLE Match_Table(
+	match_id NUMBER PRIMARY KEY , --SEQUENCE
+	match_date DATE DEFAULT SYSDATE
+);
+
+CREATE TABLE Match_Participants_Table(
+	match_id NUMBER NOT NULL,
+	player_id NUMBER,
+	score NUMBER DEFAULT 0,
+	position NUMBER DEFAULT NULL,
+	
+	CONSTRAINT MP_PK UNIQUE(match_id, player_id),
+
+	CONSTRAINT MP_FK1 FOREIGN KEY(match_id) REFERENCES Match_Table(match_id)
+	ON DELETE CASCADE,
+	CONSTRAINT MP_FK2 FOREIGN KEY(player_id) REFERENCES Player_Table(player_id)
+	ON DELETE SET NULL
+	
+);
+
+CREATE TABLE Tournament_Table(
+	tournament_id NUMBER PRIMARY KEY,
+	tournament_name VARCHAR2(60) NOT NULL,
+	start_date DATE DEFAULT SYSDATE,
+	end_date DATE DEFAULT SYSDATE,
+	capacity NUMBER DEFAULT 0 NOT NULL, 
+	CONSTRAINT TT_1 UNIQUE(TOURNAMENT_NAME,START_DATE)
+);
+
+CREATE TABLE Tournament_Participants_Table(
+	tournament_id NUMBER NOT NULL,
+	player_id NUMBER,
+	position NUMBER DEFAULT NULL,
+
+	CONSTRAINT TPT_PK  UNIQUE(tournament_id, player_id),
+	
+	CONSTRAINT TPT_1 FOREIGN KEY(tournament_id) REFERENCES Tournament_Table(tournament_id)
+	ON DELETE CASCADE,
+	CONSTRAINT TPT_2 FOREIGN KEY(player_id) REFERENCES Player_Table(player_id) 
+	ON DELETE SET NULL
+--	CONSTRAINT TPT_CAP (SELECT COUNT(*) 
+								--FROM Tournament_Participants_Table
+								--where  BY tournament_id)<=capacity //or something like that
+);
+
+CREATE TABLE Achievement_Table(
+	achievement_id NUMBER PRIMARY KEY, --SEQUENCE
+	achievement_goal VARCHAR2(50) NOT NULL,
+	achievement_rewardxp NUMBER NOT NULL,
+	achievement_description VARCHAR2(1000)	
+);
+
+CREATE TABLE Player_Achievement_Table(
+	player_id NUMBER,
+	achievement_id NUMBER,
+
+	CONSTRAINT P_A_T1 PRIMARY KEY(player_id, achievement_id),
+
+	CONSTRAINT P_A_T2 FOREIGN KEY(player_id) REFERENCES Player_Table(player_id)
+	ON DELETE CASCADE,
+
+	CONSTRAINT P_A_T3 FOREIGN KEY(achievement_id) REFERENCES Achievement_Table(achievement_id)
+	ON DELETE CASCADE
+);
+
+CREATE TABLE Tournament_Match_Table(
+	match_id NUMBER PRIMARY KEY,
+	tournament_id NUMBER NOT NULL,
+	match_level NUMBER NOT NULL,
+
+
+	CONSTRAINT T_M_T2 FOREIGN KEY(match_id) REFERENCES Match_Table(match_id)
+	ON DELETE CASCADE,
+
+	CONSTRAINT T_M_T3 FOREIGN KEY(tournament_id) REFERENCES Tournament_Table(tournament_id)
+	ON DELETE CASCADE
+
+);
+
+
+CREATE TABLE Available_To_Play(
+player_id NUMBER PRIMARY KEY,
+CONSTRAINT ATP_1 FOREIGN KEY(PLAYER_ID) REFERENCES PLAYER_TABLE(PLAYER_ID)
+ON DELETE CASCADE
+);
+

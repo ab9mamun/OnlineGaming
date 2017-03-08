@@ -1,0 +1,21 @@
+-----DROP------------------------------------------------------------
+DROP TABLE AVAILABLE_TO_PLAY;
+DROP TABLE TOURNAMENT_PARTICIPANTS_TABLE;
+DROP TABLE MATCH_PARTICIPANTS_TABLE;
+DROP TABLE Tournament_Match_Table;
+DROP TABLE Player_Achievement_Table;
+DROP TABLE Achievement_Table;
+DROP TABLE Tournament_Table;
+DROP TABLE Match_Table;
+DROP TABLE Admin_Phone_Table;
+DROP TABLE Reply_Flag_Table;
+DROP TABLE Post_Flag_Table;
+DROP TABLE Forum_Reply_Table;
+DROP TABLE Forum_Post_Table;
+DROP TABLE Moderator_Table;
+DROP TABLE Section_Table;
+DROP TABLE Player_Table;
+DROP TABLE Admin_Table;
+DROP TABLE User_Table;
+
+
